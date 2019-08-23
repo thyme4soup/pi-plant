@@ -2,7 +2,23 @@
  * dark blue/purple #111c30
  * dark pink makeup #9a4d55
  * comf couch ceige #80756b
+
+ Tiny Sweet Blue: #b5e9e9
+
+Creamy Light Tan: #fef6dd
+
+Pinkie Pie: #ffe1d0
+
+Yellow Horse: #fff1b5
+
+Green Thumb: #dcf3d0
+
  */
+--color-primary: #b5e9e9
+--color-secondary: #fef6dd
+--color-accent1: #ffe1d0
+--color-accent2: #fff1b5
+--color-accent3: #dcf3d0
 
 * {
     box-sizing: border-box;
@@ -14,7 +30,7 @@ body {
 
 /* Style the header */
 header {
-    background-color: #111c30;
+    background-color: var(--color-primary);
     padding: 10px;
     text-align: center;
     font-size: 35px;
@@ -27,7 +43,7 @@ section {
     display: flex;
 }
 .content {
-    background-color: #80756b;
+    background-color: var(--color-secondary);
 }
 .row {
     display: -webkit-box;
@@ -72,7 +88,7 @@ nav {
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    background: #9a4d55;
+    background: var(--color-accent1);
     padding: 20px;
 }
 
@@ -87,13 +103,13 @@ article {
     -webkit-flex: 3;
     -ms-flex: 3;
     flex: 3;
-    background-color: #f1f1f1;
+    background-color: var(--color-secondary);
     padding: 10px;
 }
 
 /* Style the footer */
 footer {
-    background-color: #111c30;
+    background-color: var(--color-primary);
     padding: 10px;
     text-align: center;
     color: white;
