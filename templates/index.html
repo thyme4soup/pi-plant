@@ -6,6 +6,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
+/* palette:
+ * dark blue/purple #111c30
+ * dark pink makeup #9a4d55
+ * comf couch ceige #80756b
+ */
+
 * {
     box-sizing: border-box;
 }
@@ -16,8 +23,8 @@ body {
 
 /* Style the header */
 header {
-    background-color: #666;
-    padding: 30px;
+    background-color: #111c30;
+    padding: 10px;
     text-align: center;
     font-size: 35px;
     color: white;
@@ -28,24 +35,56 @@ section {
     display: -webkit-flex;
     display: flex;
 }
-
-.container {
-    figure {
-        margin: 0;
-        background-position: center;
-        background-size: cover;
-        background-image: url(image_url_here);
-        width: 100%;
-        height: 450px;
-    }
+.content {
+    background-color: #80756b;
 }
+.row {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    flex-direction: row;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    justify-content: center;
+
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+    align-items: center;
+
+    background-color: red;
+
+}
+
+.cell {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+
+    padding: 10px;
+    margin: 10px;
+
+    border: 1px;
+    text-align: center;
+}
+img {max-width:100%;}
 
 /* Style the navigation menu */
 nav {
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    background: #ccc;
+    background: #9a4d55;
     padding: 20px;
 }
 
@@ -66,7 +105,7 @@ article {
 
 /* Style the footer */
 footer {
-    background-color: #777;
+    background-color: #111c30;
     padding: 10px;
     text-align: center;
     color: white;
@@ -96,10 +135,12 @@ footer {
     </ul>
     </nav>
 
-    <div class="container">
-        <figure>
-          <img src="{{ url_for('video_feed') }}">
-        </figure>
+    <div class="content">
+        <div class="row">
+            <div class="cell">
+                <img src="{{ url_for('video_feed') }}">
+            </div>
+        </div>
     </div>
 </section>
 
