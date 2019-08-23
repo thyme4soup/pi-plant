@@ -14,11 +14,13 @@ Yellow Horse: #fff1b5
 Green Thumb: #dcf3d0
 
  */
---color-primary: #b5e9e9
---color-secondary: #fef6dd
---color-accent1: #ffe1d0
---color-accent2: #fff1b5
---color-accent3: #dcf3d0
+:root{
+    --color-primary: #b5e9e9;
+    --color-secondary: #fef6dd;
+    --color-accent1: #ffe1d0;
+    --color-accent2: #fff1b5;
+    --color-accent3: #dcf3d0;
+}
 
 * {
     box-sizing: border-box;
