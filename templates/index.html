@@ -1,121 +1,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <title>pi-plant</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-
-/* palette:
- * dark blue/purple #111c30
- * dark pink makeup #9a4d55
- * comf couch ceige #80756b
- */
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Style the header */
-header {
-    background-color: #111c30;
-    padding: 10px;
-    text-align: center;
-    font-size: 35px;
-    color: white;
-}
-
-/* Container for flexboxes */
-section {
-    display: -webkit-flex;
-    display: flex;
-}
-.content {
-    background-color: #80756b;
-}
-.row {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-
-    -webkit-box-orient: horizontal;
-    -moz-box-orient: horizontal;
-    box-orient: horizontal;
-    flex-direction: row;
-
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    box-pack: center;
-    justify-content: center;
-
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    box-align: center;
-    align-items: center;
-}
-
-.cell {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-flex: 1;
-    -webkit-flex: 1 1 auto;
-    flex: 1 1 auto;
-
-    padding: 10px;
-    margin: 10px;
-
-    border: 1px;
-    text-align: center;
-}
-img {max-width:100%;}
-
-/* Style the navigation menu */
-nav {
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    background: #9a4d55;
-    padding: 20px;
-}
-
-/* Style the list inside the menu */
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-/* Style the content */
-article {
-    -webkit-flex: 3;
-    -ms-flex: 3;
-    flex: 3;
-    background-color: #f1f1f1;
-    padding: 10px;
-}
-
-/* Style the footer */
-footer {
-    background-color: #111c30;
-    padding: 10px;
-    text-align: center;
-    color: white;
-}
-
-/* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
-@media (max-width: 600px) {
-    section {
-        -webkit-flex-direction: column;
-        flex-direction: column;
-    }
-}
-</style>
+<link rel="stylesheet" href="/static/style.css">
 </head>
 
 
@@ -126,12 +17,6 @@ footer {
 </header>
 
 <section>
-    <nav>
-    <ul>
-        <li><a href="#">Home</a></li>
-    </ul>
-    </nav>
-
     <div class="content">
         <div class="row">
             <div class="cell">
