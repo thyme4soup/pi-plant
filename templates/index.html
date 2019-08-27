@@ -64,12 +64,20 @@ var ctx = document.getElementById('soil-metrics').getContext('2d');
 var moisture = new Chart(ctx, {
     type: 'line',
     data: {
+        labels: function() {
+            let l = [];
+            for(let i = -2; i < moisture_data.length+5; i++) {
+                l.push(i);
+            }
+            return l
+        }(),
 		datasets: [{
 			label: 'Reginald',
 			backgroundColor: "rgba(0, 140, 255, 255)",
 			borderColor: "rgba(115, 192, 255, 255)",
 			data: moisture_data,
 			fill: false,
+            spanGaps: false,
 		}]
     },
     options: {
@@ -91,6 +99,14 @@ var moisture = new Chart(ctx, {
                       return tooltipItem.yLabel;
                }
             }
+        },
+        scales: {
+            yAxes: [{
+
+            }],
+            xAxes: [{
+
+            }]
         }
 	}
 });

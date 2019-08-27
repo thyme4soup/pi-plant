@@ -5,6 +5,7 @@ import json
 import datetime
 import random
 import string
+from water import Water
 from flask import Flask, render_template, Response, request, flash
 
 # import camera driver
@@ -28,13 +29,6 @@ def get_metrics():
     }
     return metrics
 
-def manual_water():
-    return "Request sent!"
-
-def set_water(value):
-    return value
-
-
 @app.route('/', methods=['POST', 'GET'])
 def index():
     """Video streaming home page."""
@@ -43,11 +37,11 @@ def index():
 
     if request.method == 'POST':
         if request.form['action'] == 'water':
-            flash(manual_water())
+            flash(Water.manual_water())
         elif request.form['action'] == 'auto-toggle-on':
-            auto_enabled = set_water(True)
+            auto_enabled = Water.set_water(True)
         elif request.form['action'] == 'auto-toggle-off':
-            auto_enabled = set_water(False)
+            auto_enabled = Water.set_water(False)
 
     return render_template('index.html', metrics=json.dumps(metrics), auto_enabled = auto_enabled)
 
