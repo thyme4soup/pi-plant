@@ -4,11 +4,22 @@ import os
 import time
 from datetime import datetime
 import sqlite3 as lite
+import hardware
+import logging
+from logging.handlers import RotatingFileHandler
 
-def pump():
-    # pump water
-    print("watering!")
-    return True
+path = sys.path[0] + '/' if sys.path[0] else ''
+database = path + 'plant.db'
+log = path + 'water.log'
+
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
+my_handler = RotatingFileHandler(log, mode='a', maxBytes=5*1024,
+                                 backupCount=2, encoding=None, delay=0)
+my_handler.setFormatter(log_formatter)
+my_handler.setLevel(logging.INFO)
+app_log = logging.getLogger()
+app_log.setLevel(logging.INFO)
+app_log.addHandler(my_handler)
 
 if __name__ == '__main__':
     now = datetime.utcnow()
@@ -20,9 +31,9 @@ if __name__ == '__main__':
 
     # auto pumping, check for auto tag and timing
     elif sys.argv[1] == 'auto':
-        con = lite.connect('plant.db')
+        con = lite.connect(database)
         with con:
-            # grap data from db
+            # grab data from db
             cur = con.cursor()
             cur.execute("select is_auto from auto")
             is_auto = cur.fetchone()[0]
@@ -34,14 +45,17 @@ if __name__ == '__main__':
 
             # check if we're due for a watering
             if is_auto and hours <= hours_since:
-                if pump():
+                if hardware.pump():
                     cur.execute("insert into waterings values(datetime('now'))")
+                    app_log.info('Pump success at {}'.format(now))
                 else:
-                    print('pump unsuccessful')
+                    app_log.info('Pump failed at {}'.format(now))
             else:
-                print('Auto polled unsuccessfully at {}'.format(now))
+                app_log.info('Auto polled unsuccessfully at {}'.format(now))
 
     # manual pumping, no checking
     elif sys.argv[1] == 'manual':
-        pump()
-        print("manual pump at {}".format(now))
+        if hardware.pump():
+            app_log.info("manual pump at {} succeeded".format(now))
+        else:
+            app_log.info("manual pump at {} failed".format(now))
