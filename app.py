@@ -5,7 +5,6 @@ import json
 import datetime
 import random
 import string
-from water import Water
 from flask import Flask, render_template, Response, request, flash
 
 # import camera driver
