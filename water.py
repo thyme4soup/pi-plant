@@ -40,13 +40,16 @@ if __name__ == '__main__':
             cur.execute("select hours from frequency")
             hours = cur.fetchone()[0]
             cur.execute("select max(timestamp) from waterings")
-            last_watering = datetime.strptime(cur.fetchone()[0], '%Y-%m-%d %H:%M:%S')
-            hours_since = (now - last_watering).total_seconds() / (60 * 60)
+            if cur.fetchone()[0]:
+                last_watering = datetime.strptime(cur.fetchone()[0], '%Y-%m-%d %H:%M:%S')
+                hours_since = (now - last_watering).total_seconds() / (60 * 60)
+            else:
+                hours_since = 10000
 
             # check if we're due for a watering
             if is_auto and hours <= hours_since:
                 if hardware.pump():
-                    cur.execute("insert into waterings values(datetime('now'))")
+                    cur.execute("insert into waterings (timestamp, type, succeeded) values(datetime('now'), 'auto', true)")
                     app_log.info('Pump success at {}'.format(now))
                 else:
                     app_log.info('Pump failed at {}'.format(now))
