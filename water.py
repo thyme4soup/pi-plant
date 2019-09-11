@@ -40,8 +40,9 @@ if __name__ == '__main__':
             cur.execute("select hours from frequency")
             hours = cur.fetchone()[0]
             cur.execute("select max(timestamp) from waterings")
-            if cur.fetchone()[0]:
-                last_watering = datetime.strptime(cur.fetchone()[0], '%Y-%m-%d %H:%M:%S')
+            last_entry = cur.fetchone()[0]
+            if last_entry:
+                last_watering = datetime.strptime(last_entry, '%Y-%m-%d %H:%M:%S')
                 hours_since = (now - last_watering).total_seconds() / (60 * 60)
             else:
                 hours_since = 10000
