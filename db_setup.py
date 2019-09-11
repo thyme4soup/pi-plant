@@ -1,11 +1,12 @@
 
+import sys
 import sqlite3 as lite
 import logging
 from logging.handlers import RotatingFileHandler
 
 path = sys.path[0] + '/' if sys.path[0] else ''
 database = path + 'plant.db'
-log = path + 'app.log'
+log = path + 'db_setup.log'
 
 log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
 my_handler = RotatingFileHandler(log, mode='a', maxBytes=5*1024,
@@ -23,13 +24,28 @@ if __name__ == '__main__':
         cur = con.cursor()
 
         # setup auto table
-        cur.execute("create table auto(is_auto boolean)")
-        cur.execute("insert into auto (is_auto) VALUES (true)")
+        try:
+            cur.execute("create table auto(is_auto boolean)")
+            cur.execute("insert into auto (is_auto) VALUES (true)")
+        except Exception as e:
+            print("table auto may already exist!")
 
         # setup watering frequency auto_enabled
-        cur.execute("create table frequency(hours numeric)")
-        cur.execute("insert into frequency (hours) VALUES (1.5)")
+        try :
+            cur.execute("create table frequency(hours numeric)")
+            cur.execute("insert into frequency (hours) VALUES (1.5)")
+        except Exception as e:
+            print("table frequency may already exist!")
 
         # setup waterings tracking
-        cur.execute("create table waterings(timestamp datetime, type varchar(255), succeeded boolean)")
+        try:
+            cur.execute("create table waterings(timestamp datetime, type varchar(255), succeeded boolean)")
+        except Exception as e:
+            print("table waterings may already exist!")
+
+        # setup sensor registry
+        try:
+            cur.execute("create table moisture(timestamp datetime, value numeric)")
+        except Exception as e:
+            print("table moisture may already exist!")
     print("plant.db created and formatted")
