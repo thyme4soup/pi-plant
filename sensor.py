@@ -1,5 +1,6 @@
 
 import sys
+import sqlite3 as lite
 import logging
 from logging.handlers import RotatingFileHandler
 

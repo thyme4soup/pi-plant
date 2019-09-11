@@ -58,7 +58,10 @@
 // load data from jinja
 var metrics = {{ metrics|safe }};
 var moisture_data = metrics['moisture'];
+var waterings = metrics['waterings'];
+
 console.log(moisture_data);
+console.log(waterings);
 // populate
 var ctx = document.getElementById('soil-metrics').getContext('2d');
 var moisture = new Chart(ctx, {
