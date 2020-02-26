@@ -11,15 +11,12 @@ import logging
 from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template, Response, request, flash
 
-# import camera driver
-if os.environ.get('PI_DEV'):
-    from camera_test import Camera
-else:
-    from camera_pi import Camera
 
 path = sys.path[0] + '/' if sys.path[0] else ''
 database = path + 'plant.db'
 log = path + 'app.log'
+
+metric_fields = ['moisture']
 
 log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
 my_handler = RotatingFileHandler(log, mode='a', maxBytes=5*1024,
@@ -35,15 +32,29 @@ app = Flask(__name__)
 app.secret_key = ''.join(random.choice(string.ascii_lowercase) for i in range(random.randrange(8, 15)))
 
 def get_metrics():
+
+    con = lite.connect(database)
     moisture = []
-    cur = 0.
-    for i in range(20):
-        moisture.append({'x': i, 'y': cur})
-        cur = random.random() + cur - 0.5
+    with con:
+        cur = con.cursor()
+        for row in cur.execute("select * from moisture order by timestamp DESC limit 50"):
+            moisture.append(row)
+    print(moisture)
+
     metrics = {
         'moisture': moisture
     }
     return metrics
+
+def add_metrics(metrics):
+    con = lite.connect(database)
+    with con:
+        for key, val in metrics.items():
+            if key not in metric_fields:
+                continue
+            cur = con.cursor()
+            cur.execute("insert into moisture (timestamp, value) values(datetime('now'), {})".format(val))
+            app_log.info(f'stored field {key} with value {val}')
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -83,21 +94,18 @@ def index():
                             auto_enabled = auto_enabled,
                             hours = hours)
 
+@app.route('/report/<datatype>', methods=['POST'])
+def receive_report(datatype):
+    if datatype == 'data':
+        content = request.get_json()
+        print(content)
+    if datatype == 'image':
+        pass
+    return redirect('/')
 
-def gen(camera):
-    """Video streaming generator function."""
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
-@app.route('/video_feed')
-def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-
+@app.route('/status', methods=['GET'])
+def receive_report():
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True, use_reloader=True, debug=True)

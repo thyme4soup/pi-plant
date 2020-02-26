@@ -58,19 +58,34 @@
 <script>
 // load data from jinja
 var metrics = {{ metrics|safe }};
-var moisture_data = metrics['moisture'];
-var waterings = metrics['waterings'];
+var moisture_raw = metrics['moisture'];
+var waterings_raw = metrics['waterings'];
 
-console.log(moisture_data);
-console.log(waterings);
+console.log(moisture_raw);
+console.log(waterings_raw);
 // populate
 var ctx = document.getElementById('soil-metrics').getContext('2d');
+
+moisture_stamps = []
+moisture_vals = []
+for(let i = 0; i < moisture_raw.length; i++) {
+    moisture_stamps.push(moment(moisture_raw[i][0]))
+    moisture_vals.push(moisture_raw[i][1])
+}
+moisture_data = []
+for(let i = 0; i < moisture_raw.length; i++) {
+    moisture_data.push({
+        x: moisture_stamps[i],
+        y: moisture_vals[i]
+    })
+}
+
 var moisture = new Chart(ctx, {
     type: 'line',
     data: {
         labels: function() {
             let l = [];
-            for(let i = -2; i < moisture_data.length+5; i++) {
+            for(let i = 0; i < moisture_data.length; i++) {
                 l.push(i);
             }
             return l
@@ -105,14 +120,15 @@ var moisture = new Chart(ctx, {
             }
         },
         scales: {
-            yAxes: [{
-
-            }],
             xAxes: [{
-
+                ticks: {
+                    userCallback: function(label, index, labels) {
+                        return moment(label).format("MM/DD");
+                    }
+                }
             }]
         }
-	}
+    }
 });
 console.log(moisture);
 </script>

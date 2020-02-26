@@ -23,8 +23,6 @@ app_log.addHandler(my_handler)
 
 if __name__ == '__main__':
     # get a value from hardware.read_moisture then put the value in the database
-    app_log.info('hello from sensor.py!')
-
     val = hardware.read_moisture()
     app_log.info('read value {}'.format(val))
     if val:
