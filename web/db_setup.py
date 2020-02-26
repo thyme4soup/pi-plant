@@ -26,7 +26,7 @@ if __name__ == '__main__':
         # setup auto table
         try:
             cur.execute("create table auto(is_auto boolean)")
-            cur.execute("insert into auto (is_auto) VALUES (true)")
+            cur.execute("insert into auto (is_auto) VALUES (1)")
         except Exception as e:
             print("table auto may already exist!")
 

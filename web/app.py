@@ -66,6 +66,7 @@ def index():
     metrics = get_metrics()
     auto_enabled = True
     con = lite.connect(database)
+    print(con)
 
     if request.method == 'POST':
         if request.form['action'] == 'water':
@@ -75,14 +76,14 @@ def index():
             with con:
                 # set db value
                 cur = con.cursor()
-                cur.execute("update auto set is_auto = true")
+                cur.execute("update auto set is_auto = 1")
                 print("set true")
 
         elif request.form['action'] == 'auto-toggle-off':
             with con:
                 # set db value
                 cur = con.cursor()
-                cur.execute("update auto set is_auto = false")
+                cur.execute("update auto set is_auto = 0")
                 print("set false")
 
     with con:
@@ -123,4 +124,4 @@ def video_feed():
     return send_from_directory('resources/', 'plantgif.gif')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, threaded=True, use_reloader=True, debug=True)
+    app.run(host='0.0.0.0', threaded=True, use_reloader=True, debug=True)
