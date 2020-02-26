@@ -9,7 +9,11 @@ import string
 import sqlite3 as lite
 import logging
 from logging.handlers import RotatingFileHandler
-from flask import Flask, render_template, Response, request, flash
+from flask import (
+    Flask, render_template, Response,
+    request, flash, send_from_directory,
+    redirect, jsonify
+)
 
 
 path = sys.path[0] + '/' if sys.path[0] else ''
@@ -94,18 +98,29 @@ def index():
                             auto_enabled = auto_enabled,
                             hours = hours)
 
+@app.route('/status', methods=['GET'])
+def get_status():
+    return jsonify(get_metrics())
+
 @app.route('/report/<datatype>', methods=['POST'])
 def receive_report(datatype):
     if datatype == 'data':
-        content = request.get_json()
-        print(content)
-    if datatype == 'image':
+        try:
+            content = request.get_json()
+            add_metrics(content['data'])
+        except e:
+            msg = "payload must be a valid json"
+            return jsonify({"error": msg}), 400
+    elif datatype == 'image':
         pass
-    return redirect('/')
+    else:
+        msg = "invalid report endpoint"
+        return jsonify({"error": msg}), 404
+    return Response(200)
 
-@app.route('/status', methods=['GET'])
-def receive_report():
-    return redirect('/')
+@app.route('/video_feed', methods=['GET'])
+def video_feed():
+    return send_from_directory('resources/', 'plantgif.gif')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True, use_reloader=True, debug=True)
